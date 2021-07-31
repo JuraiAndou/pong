@@ -17,6 +17,13 @@ class Graphics:
     def draw():
         pass
 
+class Player(Entity):
+    def draw():
+        pass
+
+    def update():
+        pass
+
 class World(Entity):
     def __init__(self):
         print ("World initialized...")
