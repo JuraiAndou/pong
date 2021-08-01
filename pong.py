@@ -18,24 +18,25 @@ class Graphics:
         pass
 
 class Player(Entity):
-    def __init__(self):
+    def __init__(self, world):
         print("Player initialized...")
         self.size = witdh, height = 10,10
 
-        self.grapics = PlayerGraphics()
+        self.world = world
+        self.graphics = PlayerGraphics()
 
     def draw(self):
-        pass
+        self.grapics.draw(self.size, self.world.screen)
 
     def update(self):
-        pass
+        self.draw()
 
 class PlayerGraphics(Graphics):
     def __init__(self):
         print("Player Graphics initilized...")
 
-    def draw(self):
-        pygame.draw.rect()
+    def draw(self, size, screen):
+        pygame.draw.rect(screen, (255, 255, 255), (10, 10, size))
 
 class Enemy(Entity):
     def __init__(self):
@@ -63,6 +64,10 @@ class World(Entity):
         self.size = width, height = 640, 480
         self.screen = pygame.display.set_mode(self.size)
         pygame.display.set_caption('Pong')
+        self.entities = []
+
+        self.player = Player(self)
+        self.entities.append(self.player)
 
         self.bg_color = (0, 0, 0)
         
@@ -97,10 +102,22 @@ class World(Entity):
 
     def draw(self):
         self.screen.fill(self.bg_color)
+        pygame.draw.rect(self.screen, (255, 255, 255), (10, 10, 40,40))
+        
+        for i in self.entities:
+            i.graphics.draw()
+
         pygame.display.flip()
 
     def update(self, delta_time):
             pass
+
+class WorldGraphics(Graphics):
+    def draw(self):
+        self.game()
+    
+    def game(self):
+        pass
 
 class Inputs():
     def __init__(self, world):
