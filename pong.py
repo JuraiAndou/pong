@@ -18,11 +18,44 @@ class Graphics:
         pass
 
 class Player(Entity):
-    def draw():
+    def __init__(self):
+        print("Player initialized...")
+        self.size = witdh, height = 10,10
+
+        self.grapics = PlayerGraphics()
+
+    def draw(self):
         pass
 
-    def update():
+    def update(self):
         pass
+
+class PlayerGraphics(Graphics):
+    def __init__(self):
+        print("Player Graphics initilized...")
+
+    def draw(self):
+        pygame.draw.rect()
+
+class Enemy(Entity):
+    def __init__(self):
+        print("Enemy initialized...")
+        self.size = witdh, height = 10,10
+
+        self.graphics = EnemyGraphics()
+
+    def draw(self):
+        pass
+
+    def update(self):
+        pass
+
+class EnemyGraphics(Graphics):
+    def __init__(self):
+        print("Enemy Graphics intialized...")
+
+    def draw(self):
+        pygame.draw.rect()
 
 class World(Entity):
     def __init__(self):
