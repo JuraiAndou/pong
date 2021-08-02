@@ -18,15 +18,15 @@ class Graphics:
         pass
 
 class Player(Entity):
-    def __init__(self, world):
+    def __init__(self, world, x , y, width, height):
         print("Player initialized...")
-        self.size = witdh, height = 10,10
+        self.body = self.x, self.y, self.width, self.height = x, y, width, height
 
         self.world = world
         self.graphics = PlayerGraphics()
 
     def draw(self):
-        self.grapics.draw(self.size, self.world.screen)
+        self.graphics.draw(self.body, self.world)
 
     def update(self):
         self.draw()
@@ -35,18 +35,18 @@ class PlayerGraphics(Graphics):
     def __init__(self):
         print("Player Graphics initilized...")
 
-    def draw(self, size, screen):
-        pygame.draw.rect(screen, (255, 255, 255), (10, 10, size))
+    def draw(self, body, world):
+        pygame.draw.rect(world.screen, (255, 255, 255), body)
 
 class Enemy(Entity):
-    def __init__(self):
+    def __init__(self, world, x, y, width, height):
         print("Enemy initialized...")
-        self.size = witdh, height = 10,10
-
+        self.body = self.x, self.y, self.width, self.height = x, y, width, height
+        self.world = world
         self.graphics = EnemyGraphics()
 
     def draw(self):
-        pass
+        self.graphics.draw(self.world, self.body)
 
     def update(self):
         pass
@@ -55,18 +55,26 @@ class EnemyGraphics(Graphics):
     def __init__(self):
         print("Enemy Graphics intialized...")
 
-    def draw(self):
-        pygame.draw.rect()
+    def draw(self, world, body):
+        pygame.draw.rect(world.screen, (255,255,255), body)
 
 class World(Entity):
+    game_state = 'GAME'
     def __init__(self):
         print ("World initialized...")
-        self.size = width, height = 640, 480
+        self.size = self.width, self.height = 640, 480
         self.screen = pygame.display.set_mode(self.size)
+        self.graphics = WorldGraphics(self)
         pygame.display.set_caption('Pong')
+        #initializing entities
         self.entities = []
 
-        self.player = Player(self)
+        #player
+        self.player = Player(self, 10, (self.height / 2) - 50, 12, 100)
+        self.entities.append(self.player)
+
+        #enemy
+        self.player = Enemy(self, self.width - 22, (self.height / 2) - 50, 12, 100)
         self.entities.append(self.player)
 
         self.bg_color = (0, 0, 0)
@@ -101,23 +109,35 @@ class World(Entity):
 
 
     def draw(self):
-        self.screen.fill(self.bg_color)
-        pygame.draw.rect(self.screen, (255, 255, 255), (10, 10, 40,40))
-        
-        for i in self.entities:
-            i.graphics.draw()
+        #self.screen.fill(self.bg_color)
+        ##pygame.draw.rect(self.screen, (255, 255, 255), (10, 10, 40,40))
+        #
+        #for i in self.entities:
+        #    i.draw()
 
-        pygame.display.flip()
+        #pygame.display.flip()
+
+        self.graphics.draw()
 
     def update(self, delta_time):
             pass
 
 class WorldGraphics(Graphics):
+    def __init__(self, world):
+        print("world graphics initialized...")
+        self.world = world
+
     def draw(self):
-        self.game()
+        self.world.screen.fill(self.world.bg_color)
+        
+        if self.world.game_state == 'GAME':
+            self.game()
+
+        pygame.display.flip()
     
     def game(self):
-        pass
+        for i in self.world.entities:
+            i.draw()
 
 class Inputs():
     def __init__(self, world):
