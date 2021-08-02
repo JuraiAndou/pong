@@ -1,4 +1,4 @@
-import pygame, sys, random
+﻿import pygame, sys, random
 
 from pygame import draw, init
 from pygame.display import update
@@ -250,7 +250,6 @@ class WorldGraphics(Graphics):
 
     def draw(self):
         self.world.screen.fill(self.world.bg_color)
-        print(self.world.game_state)
         if self.world.game_state == "GAME":
             self.game()
         elif self.world.game_state == "START":
